@@ -1,8 +1,8 @@
-Multi-Modal Travel Assistant
+# Multi-Modal Travel Assistant
 AI Engineering Assignment — Digital Alpha Platforms
 A LangGraph-powered travel agent that basically takes a city name and returns a  very rich and interactive travel guide — complete with a city summary, 7-day weather forecast, and photo gallery.All rendered in a Streamlit web app.
 
-Architecture Overview:
+# Architecture Overview:
 The system is built as a state machine using LangGraph. Every user query is followed through a pipeline of 5 nodes, where eachnode is  responsible for exactly one thing.
 [extract_city] → [router] → [vector_store] or [web_search] → [parallel_fetch] → [aggregator]
 
@@ -18,7 +18,7 @@ parallel_fetch fires the weather API and image API at the same time using asynci
 
 aggregator takes everything (summary, forecast, images ) and packages it into a structured Pydantic object that Streamlit parses to render the final UI.
 
-Tech Stack
+# Tech Stack
 
 Orchestration: LangGraph with typed AgentState
 Vector Store: ChromaDB (in-memory, EphemeralClient)
@@ -28,7 +28,7 @@ Structured Output: Pydantic models
 Async: Python asyncio for parallel API calls
 
 
-The Three Distinction Challenges
+# The Three Distinction Challenges
 Distinction 1 — Manual Tool Execution
 I didn’t leverage any prebuilt functions like prebuilt.ToolNode or create_tool_calling_agent(). Rather, in parallel_fetch_node(), I manually parsed the LLM’s tool_calls object, iterated through it to execute functions on my own and appended the resulting messages as a ToolMessage() object in the state. This proves my understanding of how an LLM calls tools internally..
 Distinction 2 — Parallel Fan-Out
@@ -36,7 +36,7 @@ Data od weather and pictures of the cities are totally unrelated. Thus, instead 
 Distinction 3 — Memory and Context Preservation
 The checkpointer I implemented for LangGraph's MemorySaver was done with a new thread_id for each session. So, in case the user asks about Tokyo and says "What about next week?" after that, the chatbot accesses the saved state, then identifies the known city, and continues the conversation accordingly.
 
-How to Run
+# How to Run
 1. Install dependencies
 bashpip install -r requirements.txt
 2. Set your API key
@@ -45,12 +45,12 @@ export ANTHROPIC_API_KEY=your_key
 
 # Windows PowerShell
 $env:ANTHROPIC_API_KEY="your_key"
-3. Run the app
+--- Run the app
 bashstreamlit run app.py
-4. Generate graph diagram
+ Generate graph diagram
 bashpython graph.py
 
-Routing Logic
+# Routing Logic
 Three cities are hardcoded into the ChromaDB vector database: Paris, Tokyo, and New York. If the user queries any of these three, the agent fetches this information locally without requiring a web search at all. For any other city name, the agent will always route via the mocked web search endpoint.
 
 Mock APIs
