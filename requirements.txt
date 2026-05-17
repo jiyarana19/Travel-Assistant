@@ -1,0 +1,20 @@
+# Core
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-core>=0.3.0
+
+# LLM Providers (install whichever you're using)
+langchain-anthropic>=0.2.0       # for Claude 3.5 Sonnet
+langchain-openai>=0.2.0          # for GPT-4o (optional)
+
+# Vector Store
+chromadb>=0.5.0
+
+# Frontend
+streamlit>=1.38.0
+plotly>=5.18.0
+pandas>=2.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+pydantic>=2.0.0
